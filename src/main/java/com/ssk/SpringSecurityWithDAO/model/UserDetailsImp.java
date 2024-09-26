@@ -8,20 +8,19 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class UserDetailsImp implements UserDetails {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
-    private User user;
+    private final User user;
 
     public UserDetailsImp(User user) {
-        this.user=user;
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        // Return the user's role dynamically from the database.
+        // We prefix the role with "ROLE_" as per Spring Security conventions.
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     @Override
@@ -41,14 +40,13 @@ public class UserDetailsImp implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;	}
-
+        return true;
+    }
 
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
 
     @Override
     public boolean isEnabled() {

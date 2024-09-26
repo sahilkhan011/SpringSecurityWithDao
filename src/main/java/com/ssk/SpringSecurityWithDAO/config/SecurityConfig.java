@@ -49,6 +49,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(req ->
                 req
                         .requestMatchers("/register", "/login").permitAll()  // Allow access to login and register endpoints
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/manager").hasRole("MANAGER")
+                        .requestMatchers("/employee").hasRole("EMPLOYEE")
                         .anyRequest().authenticated()  // Require authentication for all other endpoints
         );
 
